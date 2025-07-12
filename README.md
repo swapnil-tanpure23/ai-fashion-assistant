@@ -1,70 +1,156 @@
-# Getting Started with Create React App
+# Fashion AI Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack application with React frontend and Node.js backend with MongoDB database.
 
-## Available Scripts
+## 🚀 Quick Start
 
-In the project directory, you can run:
+### Prerequisites
+- Node.js (v18 or higher)
+- MongoDB (see MONGODB_SETUP.md for installation)
+- npm or yarn
+- Docker and Docker Compose (optional - for automatic MongoDB setup)
 
-### `npm start`
+### One-Command Setup
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+#### With Docker (if installed):
+```bash
+npm run dev
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+#### Without Docker:
+```bash
+npm run dev:no-docker
+```
 
-### `npm test`
+This command will:
+1. Install backend dependencies
+2. Guide you through MongoDB setup
+3. Start the Node.js backend
+4. Start the React frontend
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Manual Setup
 
-### `npm run build`
+#### 1. Install Dependencies
+```bash
+# Install frontend dependencies
+npm install
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Install backend dependencies
+cd backend
+npm install
+cd ..
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### 2. Start MongoDB and Backend
+```bash
+# Option A: With Docker (if installed)
+docker-compose up -d
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Option B: Manual MongoDB setup
+# 1. Install MongoDB (see MONGODB_SETUP.md)
+# 2. Start MongoDB service
+# 3. Start backend
+cd backend
+npm start
+```
 
-### `npm run eject`
+#### 3. Start Frontend
+```bash
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 📁 Project Structure
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+my-app/
+├── backend/                 # Node.js backend
+│   ├── server.js           # Main server file
+│   ├── package.json        # Backend dependencies
+│   └── Dockerfile          # Backend Docker configuration
+├── src/                    # React frontend
+├── docker-compose.yml      # Docker services configuration
+├── start-project.js        # Project startup script
+└── package.json           # Frontend dependencies
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🔧 Available Scripts
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Frontend
+- `npm start` - Start React development server
+- `npm build` - Build for production
+- `npm test` - Run tests
 
-## Learn More
+### Backend
+- `npm run backend` - Start backend server
+- `npm run backend:dev` - Start backend with nodemon
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Docker
+- `npm run docker:up` - Start MongoDB and backend containers
+- `npm run docker:down` - Stop all containers
+- `npm run docker:logs` - View container logs
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Full Project
+- `npm run dev` - Start entire project (frontend + backend + MongoDB)
 
-### Code Splitting
+## 🌐 API Endpoints
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Orders
+- `POST /api/orders` - Create new order
+- `GET /api/orders/:email` - Get user orders
+- `GET /api/orders/:order_id/status` - Get order status
+- `PUT /api/orders/:order_id/status` - Update order status
 
-### Analyzing the Bundle Size
+### Users
+- `POST /api/users` - Create/update user
+- `GET /api/users/:email` - Get user by email
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Health
+- `GET /health` - Health check endpoint
 
-### Making a Progressive Web App
+## 🗄️ Database
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+MongoDB is automatically started with Docker and includes:
+- Database: `fashion_ai_db`
+- Collections: `orders`, `users`
+- Authentication: admin/password123
 
-### Advanced Configuration
+## 🔍 Troubleshooting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### MongoDB Connection Issues
+1. Ensure Docker is running
+2. Check if MongoDB container is up: `docker ps`
+3. Verify connection string in `backend/env.example`
 
-### Deployment
+### Port Conflicts
+- Frontend: http://localhost:3000
+- Backend: http://localhost:8000
+- MongoDB: localhost:27017
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Reset Database
+```bash
+docker-compose down -v
+docker-compose up -d
+```
 
-### `npm run build` fails to minify
+## 🛠️ Development
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Environment Variables
+Copy `backend/env.example` to `backend/.env` and adjust as needed:
+
+```env
+NODE_ENV=development
+PORT=8000
+MONGODB_URL=mongodb://admin:password123@localhost:27017/fashion_ai_db?authSource=admin
+```
+
+### Adding New Features
+1. Backend: Add routes in `backend/server.js`
+2. Frontend: Add components in `src/components/`
+3. Database: Add schemas in `backend/server.js`
+
+## 📦 Production Deployment
+
+1. Build frontend: `npm run build`
+2. Set production environment variables
+3. Use production MongoDB instance
+4. Deploy backend to your preferred hosting service
